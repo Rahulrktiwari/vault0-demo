@@ -8,7 +8,7 @@ app.use(express.json());
 
 const AUTH0_DOMAIN = "dev-eketxqf17u8eym7u.us.auth0.com";
 const CLIENT_ID = "KfvbPvG99kE0WfANrFF9kasWl7YUOZez";
-const CLIENT_SECRET = "r-yBwyzkm-MSTiuhNHBMx53cNUMiEblhtC9f-rlBpeFOCj5JB26RKSRuUVjsE5jYE";
+const CLIENT_SECRET = "r-yBwyzkm-MSTiuhNHBMx53cNUMiEblhtC9f-rlBpeFOCj5JB26RKSRuUVjsE5jY";
 const AUDIENCE = `https://${AUTH0_DOMAIN}/api/v2/`;
 
 // 🔐 Get Management API token
