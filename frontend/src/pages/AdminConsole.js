@@ -13,7 +13,7 @@ function AdminConsole() {
   // 🔹 Fetch users
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/users");
+      const res = await fetch("https://vault0-backend.onrender.com/users");
       const data = await res.json();
       setUsers(data);
     } catch (err) {
@@ -28,7 +28,7 @@ function AdminConsole() {
   // 🔹 Delete user
   const deleteUser = async (id) => {
     try {
-      await fetch(`http://localhost:5000/users/${id}`, {
+      await fetch(`https://vault0-backend.onrender.com/users/${id}`, {
         method: "DELETE",
       });
       fetchUsers(); // refresh list
@@ -45,7 +45,7 @@ function AdminConsole() {
     }
 
     try {
-      await fetch("http://localhost:5000/users", {
+      await fetch("https://vault0-backend.onrender.com/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
