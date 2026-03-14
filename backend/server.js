@@ -6,9 +6,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const AUTH0_DOMAIN = "dev-f5yhsqg75hl2smt8.us.auth0.com";
-const CLIENT_ID = "UOumc7M70kQlv3DzKad2PIuha1XF6P5K";
-const CLIENT_SECRET = "rBbaNtExHO7m1HcYeAouRivAgCSA04qrYjLIP7LEBjc_dy9l5z9njdAZlMw1MdVE";
+const AUTH0_DOMAIN = "dev-eketxqf17u8eym7u.us.auth0.com";
+const CLIENT_ID = "KfvbPvG99kE0WfANrFF9kasWl7YUOZez";
+const CLIENT_SECRET = "r-yBwyzkm-MSTiuhNHBMx53cNUMiEblhtC9f-rlBpeFOCj5JB26RKSRuUVjsE5jYE";
 const AUDIENCE = `https://${AUTH0_DOMAIN}/api/v2/`;
 
 // 🔐 Get Management API token
