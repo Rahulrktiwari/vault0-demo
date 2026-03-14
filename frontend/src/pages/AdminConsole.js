@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 function AdminConsole() {
   const { user } = useAuth0();
+  console.log(user);
 
   const roles = user?.["https://vault0.com/roles"] || [];
 
