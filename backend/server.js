@@ -28,7 +28,7 @@ app.get("/users", async (req, res) => {
     const token = await getManagementToken();
 
     const users = await axios.get(
-      `https://${AUTH0_DOMAIN}/api/v2/users`,
+      `https://${AUTH0_DOMAIN}/api/v2/users?fields=email,user_id,app_metadata&include_fields=true`,
       {
         headers: { Authorization: `Bearer ${token}` }
       }
@@ -86,8 +86,9 @@ app.post("/promote/:id", async (req, res) => {
   try {
     const token = await getManagementToken();
 
-    const ADMIN_ROLE_ID = "rol_VCvkcOhA3qZmbK88"; // paste here
+    const ADMIN_ROLE_ID = "rol_VCvkcOhA3qZmbK88"; // your role ID
 
+    // 1️⃣ Assign role in Auth0
     await axios.post(
       `https://${AUTH0_DOMAIN}/api/v2/users/${req.params.id}/roles`,
       {
@@ -100,7 +101,20 @@ app.post("/promote/:id", async (req, res) => {
       }
     );
 
-    res.send("User promoted to Admin");
+    // 2️⃣ ALSO store in metadata (for UI)
+    await axios.patch(
+      `https://${AUTH0_DOMAIN}/api/v2/users/${req.params.id}`,
+      {
+        app_metadata: { role: "Admin" },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    res.send("User promoted");
   } catch (err) {
     console.error(err.response?.data || err.message);
     res.status(500).send("Error promoting user");

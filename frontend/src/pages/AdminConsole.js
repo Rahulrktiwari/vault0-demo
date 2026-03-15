@@ -129,12 +129,19 @@ function AdminConsole() {
               </small>
             </div>
 <div style={{ display: "flex", gap: "10px" }}>
-            <button onClick={() => deleteUser(u.user_id)}>
-              Delete
-            </button>
-            <button onClick={() => promoteUser(u.user_id)}>
-  Promote to Admin
-</button>
+  <button onClick={() => deleteUser(u.user_id)}>
+    Delete
+  </button>
+
+  {u.app_metadata?.role === "Admin" ? (
+    <button disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
+      Already Admin
+    </button>
+  ) : (
+    <button onClick={() => promoteUser(u.user_id)}>
+      Promote
+    </button>
+  )}
 </div>
           </div>
         ))
