@@ -26,6 +26,19 @@ function AdminConsole() {
     fetchUsers();
   }, []);
 
+
+  const promoteUser = async (id) => {
+  try {
+    await fetch(`https://vault0-backend.onrender.com/promote/${id}`, {
+      method: "POST",
+    });
+
+    alert("User promoted to Admin");
+  } catch (err) {
+    console.error("Error promoting user:", err);
+  }
+};
+
   // 🔹 Delete user
   const deleteUser = async (id) => {
     try {
@@ -115,10 +128,14 @@ function AdminConsole() {
                 {u.user_id}
               </small>
             </div>
-
+<div style={{ display: "flex", gap: "10px" }}>
             <button onClick={() => deleteUser(u.user_id)}>
               Delete
             </button>
+            <button onClick={() => promoteUser(u.user_id)}>
+  Promote to Admin
+</button>
+</div>
           </div>
         ))
       )}

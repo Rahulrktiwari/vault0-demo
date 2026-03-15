@@ -80,4 +80,31 @@ app.delete("/users/:id", async (req, res) => {
   }
 });
 
+
+// 🔹 PROMOTE USER TO ADMIN
+app.post("/promote/:id", async (req, res) => {
+  try {
+    const token = await getManagementToken();
+
+    const ADMIN_ROLE_ID = "rol_VCvkcOhA3qZmbK88"; // paste here
+
+    await axios.post(
+      `https://${AUTH0_DOMAIN}/api/v2/users/${req.params.id}/roles`,
+      {
+        roles: [ADMIN_ROLE_ID],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    res.send("User promoted to Admin");
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    res.status(500).send("Error promoting user");
+  }
+});
+
 app.listen(5000, () => console.log("Backend running on port 5000"));
