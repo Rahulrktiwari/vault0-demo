@@ -133,7 +133,7 @@ function AdminConsole() {
     Delete
   </button>
 
-  {u.app_metadata?.role === "Admin" ? (
+  {u.roles?.includes("Admin") ? (
     <button disabled style={{ opacity: 0.5, cursor: "not-allowed" }}>
       Already Admin
     </button>

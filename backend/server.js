@@ -27,14 +27,37 @@ app.get("/users", async (req, res) => {
   try {
     const token = await getManagementToken();
 
-    const users = await axios.get(
-      `https://${AUTH0_DOMAIN}/api/v2/users?fields=email,user_id,app_metadata&include_fields=true`,
+    const usersRes = await axios.get(
+      `https://${AUTH0_DOMAIN}/api/v2/users`,
       {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
 
-    res.json(users.data);
+    const users = usersRes.data;
+
+    // 🔥 Fetch roles for each user
+    const usersWithRoles = await Promise.all(
+      users.map(async (u) => {
+        try {
+          const rolesRes = await axios.get(
+            `https://${AUTH0_DOMAIN}/api/v2/users/${u.user_id}/roles`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          return {
+            ...u,
+            roles: rolesRes.data.map((r) => r.name),
+          };
+        } catch {
+          return { ...u, roles: [] };
+        }
+      })
+    );
+
+    res.json(usersWithRoles);
   } catch (err) {
     console.error(err.response?.data || err.message);
     res.status(500).send("Error fetching users");
