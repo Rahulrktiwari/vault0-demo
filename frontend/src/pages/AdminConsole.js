@@ -1,5 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+
+const { user } = useAuth0();
 
 function AdminConsole() {
   const { user } = useAuth0();
@@ -123,11 +126,18 @@ function AdminConsole() {
             <div>
               <p style={{ margin: 0, fontWeight: "500" }}>
                 {u.email || "No Email"}
+                  {/* 🔹 YOU BADGE */}
+      {isCurrentUser && (
+        <span style={styles.youBadge}>You</span>
+      )}
               </p>
               <small style={{ color: "#94a3b8" }}>
                 {u.user_id}
               </small>
             </div>
+              {/* 🔹 HIDE ACTIONS FOR CURRENT USER */}
+  {!isCurrentUser && (
+            
 <div style={{ display: "flex", gap: "10px" }}>
   <button onClick={() => deleteUser(u.user_id)}>
     Delete
@@ -143,6 +153,7 @@ function AdminConsole() {
     </button>
   )}
 </div>
+  )}
           </div>
         ))
       )}
@@ -151,3 +162,15 @@ function AdminConsole() {
 );}
 
 export default AdminConsole;
+
+
+const styles = {
+  youBadge: {
+    marginLeft: "10px",
+    backgroundColor: "#22c55e",
+    color: "white",
+    padding: "2px 8px",
+    borderRadius: "6px",
+    fontSize: "12px",
+  },
+};
