@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
@@ -7,35 +6,57 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
-  const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+  const {
+    loginWithRedirect,
+    logout,
+    isAuthenticated,
+    user,
+  } = useAuth0();
+
+  // 🔹 Extract roles safely
+  const roles = user?.["https://vault0.com/roles"] || [];
 
   return (
     <BrowserRouter>
- <nav className="navbar">
-  <div className="nav-left">
-    <span className="logo">Vault0</span>
-    <Link to="/">Home</Link>
-    <Link to="/dashboard">Dashboard</Link>
-    <Link to="/admin">Admin</Link>
-  </div>
+      {/* 🔹 NAVBAR */}
+      <nav style={styles.nav}>
+        <Link to="/" style={styles.link}>Home</Link>
 
-  <div className="nav-right">
-    {!isAuthenticated ? (
-      <button onClick={() => loginWithRedirect()}>
-        Login
-      </button>
-    ) : (
-      <button
-        onClick={() =>
-          logout({ logoutParams: { returnTo: window.location.origin } })
-        }
-      >
-        Logout
-      </button>
-    )}
-  </div>
-</nav>
+        {/* 🔹 NOT LOGGED IN */}
+        {!isAuthenticated && (
+          <button
+            onClick={() => loginWithRedirect()}
+            style={styles.button}
+          >
+            Login
+          </button>
+        )}
 
+        {/* 🔹 LOGGED IN */}
+        {isAuthenticated && (
+          <>
+            <Link to="/dashboard" style={styles.link}>
+              Dashboard
+            </Link>
+
+            {/* 🔹 Show Admin ONLY if role exists */}
+            {roles.includes("Admin") && (
+              <Link to="/admin" style={styles.link}>
+                Admin
+              </Link>
+            )}
+
+            <button
+              onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+              style={styles.button}
+            >
+              Logout
+            </button>
+          </>
+        )}
+      </nav>
+
+      {/* 🔹 ROUTES */}
       <Routes>
         <Route path="/" element={<LandingPage />} />
 
@@ -62,3 +83,27 @@ function App() {
 }
 
 export default App;
+
+
+
+const styles = {
+  nav: {
+    display: "flex",
+    gap: "20px",
+    padding: "15px 30px",
+    backgroundColor: "#0f172a",
+    alignItems: "center",
+  },
+  link: {
+    color: "white",
+    textDecoration: "none",
+    fontWeight: "500",
+  },
+  button: {
+    marginLeft: "auto",
+    padding: "6px 12px",
+    borderRadius: "6px",
+    border: "none",
+    cursor: "pointer",
+  },
+};
