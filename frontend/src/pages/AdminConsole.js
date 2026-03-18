@@ -2,10 +2,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 
 
-
+const { user } = useAuth0();
 
 function AdminConsole() {
-  const { user } = useAuth0();
+  
   console.log(user);
 
   const roles = user?.["https://vault0.com/roles"] || [];
